@@ -16,7 +16,6 @@ function App() {
   const addSkill = () => {
     const value = newSkill.trim();
     if (value !== "") {
-      // ✅ Immutability (ห้าม push)
       setSkills([...skills, value]);
       setNewSkill("");
     }
@@ -36,7 +35,7 @@ function App() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-  // --- Fetch GitHub data + loading/error ---
+  // --- Fetch GitHub data ---
   useEffect(() => {
     setLoading(true);
     setError(null);
@@ -45,14 +44,14 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         if (data?.message === "Not Found") {
-          setError("❌ User not found");
+          setError("User not found");
           setGithubData(null);
           return;
         }
         setGithubData(data);
       })
       .catch(() => {
-        setError("❌ Network error");
+        setError("Network error");
         setGithubData(null);
       })
       .finally(() => {
@@ -60,8 +59,8 @@ function App() {
       });
   }, [username]);
 
-  const isDark = theme === "dark";
 
+  const isDark = theme === "dark";
   return (
     <div
       style={{
