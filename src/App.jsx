@@ -13,13 +13,27 @@ function App() {
   const [skills, setSkills] = useState(["React", "JavaScript"]);
   const [newSkill, setNewSkill] = useState("");
 
+  // ✅ Task 1: Search state
+  const [searchTerm, setSearchTerm] = useState("");
+
   const addSkill = () => {
     const value = newSkill.trim();
     if (value !== "") {
-      setSkills([...skills, value]);
+      setSkills([...skills, value]); // ✅ immutability
       setNewSkill("");
     }
   };
+
+  // ✅ Task 2: Delete skill (filter)
+  const deleteSkill = (indexToDelete) => {
+    const updatedSkills = skills.filter((_, index) => index !== indexToDelete);
+    setSkills(updatedSkills);
+  };
+
+  // ✅ Task 1: Filter list (DON'T touch original skills)
+  const filteredSkills = skills.filter((skill) =>
+    skill.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // --- Theme states (dark mode) ---
   const [theme, setTheme] = useState("light");
@@ -59,8 +73,8 @@ function App() {
       });
   }, [username]);
 
-
   const isDark = theme === "dark";
+
   return (
     <div
       style={{
@@ -98,10 +112,15 @@ function App() {
           name={githubData.name || githubData.login}
           role="GitHub User"
           bio={githubData.bio || "No bio available"}
+          // ✅ ส่งของใหม่เข้าไปให้ ProfileCard ใช้
           skills={skills}
+          filteredSkills={filteredSkills}
           newSkill={newSkill}
           setNewSkill={setNewSkill}
           addSkill={addSkill}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          deleteSkill={deleteSkill}
           isDark={isDark}
         />
       )}

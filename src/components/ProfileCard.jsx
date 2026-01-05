@@ -4,10 +4,13 @@ function ProfileCard({
   name,
   role,
   bio,
-  skills,
+  filteredSkills,
   newSkill,
   setNewSkill,
   addSkill,
+  searchTerm,
+  setSearchTerm,
+  deleteSkill,
   isDark,
 }) {
   const [likes, setLikes] = useState(0);
@@ -15,7 +18,7 @@ function ProfileCard({
   return (
     <div
       style={{
-        maxWidth: 480,
+        maxWidth: 520,
         margin: "0 auto",
         border: "1px solid #ccc",
         padding: 20,
@@ -24,66 +27,111 @@ function ProfileCard({
       }}
     >
       <h2 style={{ marginTop: 0 }}>{name}</h2>
-      <p>
-        <strong>Role:</strong> {role}
-      </p>
+      <p><strong>Role:</strong> {role}</p>
       <p>{bio}</p>
 
       {/* Like */}
       <button
         onClick={() => setLikes(likes + 1)}
         style={{
-          padding: "10px 14px",
-          borderRadius: 10,
+          padding: "8px 12px",
+          borderRadius: 8,
           border: "1px solid #ccc",
           cursor: "pointer",
-          marginBottom: 16,
+          marginBottom: 14,
+          fontSize: 14,
         }}
       >
-        Like: {likes}
+        👍 Like: {likes}
       </button>
 
-      {/* Skills input */}
-      <div style={{ display: "flex", gap: 10, marginBottom: 12 }}>
+      {/* ✅ SKILL LIST (ย้ายมาไว้ด้านบน + ทำให้เล็กลง) */}
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 6,
+          marginBottom: 14,
+        }}
+      >
+        {filteredSkills.map((skill, index) => {
+          const isReact = skill.toLowerCase().includes("react");
+
+          return (
+            <span
+              key={index}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "4px 8px",
+                borderRadius: 999,
+                fontSize: 12,
+                border: "1px solid #ccc",
+                background: isReact ? "#dbeafe" : "transparent",
+                color: isReact ? "#1d4ed8" : "inherit",
+                fontWeight: isReact ? 600 : 400,
+              }}
+            >
+              {skill}
+              <button
+                onClick={() => deleteSkill(index)}
+                style={{
+                  border: "none",
+                  background: "transparent",
+                  cursor: "pointer",
+                  fontSize: 12,
+                  lineHeight: 1,
+                }}
+              >
+                ✕
+              </button>
+            </span>
+          );
+        })}
+      </div>
+
+      {/* Search */}
+      <input
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search skills..."
+        style={{
+          width: "100%",
+          padding: "8px 10px",
+          borderRadius: 8,
+          border: "1px solid #ccc",
+          marginBottom: 10,
+          fontSize: 14,
+        }}
+      />
+
+      {/* Add Skill */}
+      <div style={{ display: "flex", gap: 8 }}>
         <input
           value={newSkill}
           onChange={(e) => setNewSkill(e.target.value)}
           placeholder="Add a skill"
           style={{
             flex: 1,
-            padding: "10px 12px",
-            borderRadius: 10,
+            padding: "8px 10px",
+            borderRadius: 8,
             border: "1px solid #ccc",
+            fontSize: 14,
           }}
         />
         <button
           onClick={addSkill}
           style={{
-            padding: "10px 14px",
-            borderRadius: 10,
+            padding: "8px 12px",
+            borderRadius: 8,
             border: "1px solid #ccc",
             cursor: "pointer",
+            fontSize: 14,
           }}
         >
           Add
         </button>
-      </div>
-
-      {/* Skill tags */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
-        {skills.map((skill, index) => (
-          <span
-            key={index} // ✅ key ใน map (ตาม Bonus Criteria)
-            style={{
-              padding: "6px 10px",
-              borderRadius: 999,
-              border: "1px solid #ccc",
-              fontSize: 14,
-            }}
-          >
-            {skill}
-          </span>
-        ))}
       </div>
     </div>
   );
