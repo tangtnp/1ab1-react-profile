@@ -97,7 +97,7 @@ function ProfileCard({
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Search skills..."
         style={{
-          width: "100%",
+          width: "95%",
           padding: "8px 10px",
           borderRadius: 8,
           border: "1px solid #ccc",
