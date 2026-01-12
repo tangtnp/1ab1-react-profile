@@ -1,20 +1,34 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import FormLayout from "./layouts/FormLayout";
-import Step1 from "./pages/Step1";
-import Step2 from "./pages/Step2";
-import Review from "./pages/Review";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import AdminSettings from "./pages/AdminSettings";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/apply/step-1" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
 
-        <Route path="/apply" element={<FormLayout />}>
-          <Route path="step-1" element={<Step1 />} />
-          <Route path="step-2" element={<Step2 />} />
-          <Route path="review" element={<Review />} />
-        </Route>
+        <Route path="/login" element={<Login />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "user"]}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin-settings"
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminSettings />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
